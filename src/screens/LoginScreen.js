@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Dimensions,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 
 import AtWebview from './AtWebview';
@@ -28,7 +29,7 @@ class LoginScreen extends Component {
             isPassPressed: false,
             email: null,
             password: null,
-            isWebView: false,
+            isLoading: false,
             isLoggedIn: true,
         }
     }
@@ -41,11 +42,13 @@ class LoginScreen extends Component {
                     isLoggedIn: true,
                     email: data[0][1],
                     password: data[1][1],
+                    isLoading: false,
                 });     
                 this.atWebview.onSignIn();
             } else {
                 this.setState({
                     isLoggedIn: false,
+                    isLoading: false,
                 })
             }
         });
@@ -82,6 +85,9 @@ class LoginScreen extends Component {
             AsyncStorage.multiRemove(
                 ['email', 'password']
             );
+            this.setState({
+                isLoading: false,
+            })
         }
     }
     render() {
@@ -117,8 +123,9 @@ class LoginScreen extends Component {
                             console.log(this.state.password);
                           }}
                     />
-                    <TouchableOpacity onPress={() => {this.atWebview.onSignIn(); this.setState({isWebView: true})}} style={styles.signin}>
+                    <TouchableOpacity onPress={() => {this.atWebview.onSignIn(); this.setState({ isLoading: true})}} style={ !this.state.isLoading ? styles.signin : [styles.signin, { backgroundColor: 'gray'}]}>
                         <Text style={styles.signinText}>SIGN IN</Text>
+                        { this.state.isLoading ? <ActivityIndicator size="small" style={{ position: 'absolute' }} color="#0000ff"></ActivityIndicator> : null }
                     </TouchableOpacity>
  
                 </View>

@@ -48,6 +48,7 @@ module.exports = StyleSheet.create({
         color: '#ffff',
         borderBottomColor: '#f8f8f8',
         borderBottomWidth: 1,
+       // fontFamily: 'Roboto, sans-serif',
     },
     password: {
         alignSelf: 'stretch',
